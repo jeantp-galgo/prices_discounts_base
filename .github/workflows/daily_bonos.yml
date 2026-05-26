@@ -1,0 +1,32 @@
+name: Reporte diario — Bonos Galgo MX
+
+on:
+  # 05:00 hora Ciudad de México (UTC-6, sin cambio de horario desde 2023)
+  schedule:
+    - cron: "0 11 * * *"
+
+  # Permite ejecutar el workflow manualmente desde la pestaña Actions
+  workflow_dispatch:
+
+jobs:
+  run-report:
+    name: Generar reporte de bonos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar reporte
+        env:
+          GSHEETS_CREDENTIALS: ${{ secrets.GSHEETS_CREDENTIALS }}
+        run: python main.py
