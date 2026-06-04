@@ -10,10 +10,12 @@ Ejecución:
 import pandas as pd
 import numpy as np
 from src.sources.sheets.reader import GoogleSheetReader
+from src.config.settings import MONITOR_CREDENTIALS, PRICE_SHEETS_CREDENTIALS
 
 
 def main():
-    gsheets = GoogleSheetReader()
+    monitor_reader = GoogleSheetReader(MONITOR_CREDENTIALS)
+    price_reader   = GoogleSheetReader(PRICE_SHEETS_CREDENTIALS)
 
     # ── 1. Inventario ────────────────────────────────────────────────────────
     print("Leyendo inventario...")
@@ -21,7 +23,7 @@ def main():
         "sheet_name": "[MKP] Precios no duplicados",
         "worksheet": "Base MX Moto",
     }
-    df_inventory = gsheets.read_sheet(google_sheet_info)
+    df_inventory = monitor_reader.read_sheet(google_sheet_info)
     df_inventory = df_inventory[["code", "brand", "model", "status"]]
 
     df_inventory = (
@@ -47,7 +49,7 @@ def main():
     ]
 
     print(f"\nLeyendo hojas de precios desde '{SHEET_NAME}'...")
-    hojas = gsheets.read_sheets_by_brands(SHEET_NAME, marcas)
+    hojas = price_reader.read_sheets_by_brands(SHEET_NAME, marcas)
 
     # ── 3. Consolidar ─────────────────────────────────────────────────────────
     df_all = pd.concat(hojas.values(), ignore_index=True)
@@ -135,7 +137,7 @@ def main():
         "worksheet": "Base MX Moto",
         "df": df_final,
     }
-    gsheets.update_sheet(google_sheet_info_out, clear_data=True)
+    monitor_reader.update_sheet(google_sheet_info_out, clear_data=True)
     print("  ✓ Actualizado: Bonos en modelos")
 
 

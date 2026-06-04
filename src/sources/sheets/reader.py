@@ -2,8 +2,8 @@ from src.sources.sheets.client import GoogleSheetClient
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 class GoogleSheetReader:
-    def __init__(self):
-        self.client = GoogleSheetClient().get_client()
+    def __init__(self, credentials: dict):
+        self.client = GoogleSheetClient(credentials).get_client()
 
     def read_sheet(self, google_sheet_info: dict):
         """

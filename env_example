@@ -1,4 +1,5 @@
 # Credenciales de Google Service Account codificadas en base64
 # Para generarlas: base64 -w 0 credentials.json  (Linux/Mac)
 #                  [Convert]::ToBase64String([IO.File]::ReadAllBytes("credentials.json"))  (PowerShell)
-GSHEETS_CREDENTIALS=
+MKP_MONITOR_BASE64=
+MKP_PRICE_SHEETS_BASE64=

@@ -28,5 +28,6 @@ jobs:
 
       - name: Ejecutar reporte
         env:
-          GSHEETS_CREDENTIALS: ${{ secrets.GSHEETS_CREDENTIALS }}
+          MKP_MONITOR_BASE64: ${{ secrets.MKP_MONITOR_BASE64 }}
+          MKP_PRICE_SHEETS_BASE64: ${{ secrets.MKP_PRICE_SHEETS_BASE64 }}
         run: python main.py
