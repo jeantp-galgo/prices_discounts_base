@@ -19,7 +19,7 @@ def main():
     print("Leyendo inventario...")
     google_sheet_info = {
         "sheet_name": "[MKP] Precios no duplicados",
-        "worksheet": "price_data_mx",
+        "worksheet": "Base MX Moto",
     }
     df_inventory = gsheets.read_sheet(google_sheet_info)
     df_inventory = df_inventory[["code", "brand", "model", "status"]]
@@ -132,7 +132,7 @@ def main():
     print("\nActualizando hoja destino...")
     google_sheet_info_out = {
         "sheet_name": "[MKP - MX] Bonos en modelos",
-        "worksheet": "mx",
+        "worksheet": "Base MX Moto",
         "df": df_final,
     }
     gsheets.update_sheet(google_sheet_info_out, clear_data=True)
