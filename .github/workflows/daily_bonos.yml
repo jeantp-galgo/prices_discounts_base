@@ -4,7 +4,7 @@ on:
   # 6:00 AM Colombia (UTC-5) = 11:00 UTC.
   # GitHub Actions puede agregar ~5-30 min de delay; el reporte llega antes de las 6:30 AM CO.
   schedule:
-    - cron: "0 11 * * *"
+    - cron: "0 22 * * *"
 
   # Permite ejecutar el workflow manualmente desde la pestaña Actions
   workflow_dispatch:
