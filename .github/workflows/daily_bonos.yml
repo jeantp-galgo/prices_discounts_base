@@ -1,10 +1,10 @@
 name: Reporte diario — Bonos Galgo MX
 
 on:
-  # 6:00 AM Colombia (UTC-5) = 11:00 UTC.
-  # GitHub Actions puede agregar ~5-30 min de delay; el reporte llega antes de las 6:30 AM CO.
+  # 9:00 PM Colombia (UTC-5) = 02:00 UTC.
+  # GitHub Actions puede agregar ~5-30 min de delay
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "0 4 * * *"
 
   # Permite ejecutar el workflow manualmente desde la pestaña Actions
   workflow_dispatch:
