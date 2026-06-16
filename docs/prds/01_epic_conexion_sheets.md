@@ -5,8 +5,8 @@
 ## Sobre este documento
 - **Para quién es**: PMs e IAs que van a implementar esta épica.
 - **Qué incluye**: el QUÉ y el PARA QUÉ de la autenticación con Google Sheets y la detección de hojas válidas.
-- **Qué NO incluye**: implementación técnica → ver `/docs/specs/T01-conexion-sheets.md` (por definir).
-- **PRD padre**: `/docs/prds/00-vision.md`
+- **Qué NO incluye**: implementación técnica → ver `/docs/specs/T01_conexion_sheets.md` (por definir).
+- **PRD padre**: `/docs/prds/00_vision.md`
 
 ## 1. Objetivo
 
@@ -92,12 +92,12 @@ El listado de marcas se provee como archivo de configuración externo (no hardco
 
 ## 7. Épicas relacionadas
 
-- E02 (`02-epic-extraccion-bonos.md`) consume el mapeo `marca → pestaña` producido por esta épica.
-- E03 (`03-epic-output-reporte.md`) no depende directamente de esta épica, pero E02 sí.
+- E02 (`02_epic_extraccion_bonos.md`) consume el mapeo `marca → pestaña` producido por esta épica.
+- E03 (`03_epic_output_reporte.md`) no depende directamente de esta épica, pero E02 sí.
 
 ## 8. Specs técnicos asociados
 
-- `/docs/specs/T01-conexion-sheets.md` (por definir — responsabilidad de documentation-expert)
+- `/docs/specs/T01_conexion_sheets.md` (por definir — responsabilidad de documentation-expert)
 
 ## 9. Decisiones relacionadas
 

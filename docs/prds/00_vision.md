@@ -10,10 +10,10 @@
 ```
 /docs
   /prds
-    00-vision.md                  ← Este documento
-    01-epic-conexion-sheets.md    ← E01: Conexión y detección de hojas
-    02-epic-extraccion-bonos.md   ← E02: Extracción y filtrado de bonos
-    03-epic-output-reporte.md     ← E03: Consolidación y escritura del reporte
+    00_vision.md                  ← Este documento
+    01_epic_conexion_sheets.md    ← E01: Conexión y detección de hojas
+    02_epic_extraccion_bonos.md   ← E02: Extracción y filtrado de bonos
+    03_epic_output_reporte.md     ← E03: Consolidación y escritura del reporte
   /specs
     (por definir — responsabilidad de documentation-expert)
   /decisions
@@ -64,9 +64,9 @@ Cuando el pipeline termina de procesar, quiere escribir el resultado directament
 
 | # | Épica | Descripción | Link | Estado |
 |---|---|---|---|---|
-| E01 | Conexión y detección de hojas | Autenticación con Google Sheets API y detección flexible de hojas válidas por marca | `01-epic-conexion-sheets.md` | Pendiente |
-| E02 | Extracción y filtrado de bonos | Lectura de columnas clave y filtrado de modelos con al menos un descuento activo | `02-epic-extraccion-bonos.md` | Pendiente |
-| E03 | Consolidación y escritura del reporte | Construcción de tabla final, cálculos derivados y escritura en Google Sheets vía GitHub Actions | `03-epic-output-reporte.md` | Pendiente |
+| E01 | Conexión y detección de hojas | Autenticación con Google Sheets API y detección flexible de hojas válidas por marca | `01_epic_conexion_sheets.md` | Pendiente |
+| E02 | Extracción y filtrado de bonos | Lectura de columnas clave y filtrado de modelos con al menos un descuento activo | `02_epic_extraccion_bonos.md` | Pendiente |
+| E03 | Consolidación y escritura del reporte | Construcción de tabla final, cálculos derivados y escritura en Google Sheets vía GitHub Actions | `03_epic_output_reporte.md` | Pendiente |
 
 ## 7. Métricas de éxito
 

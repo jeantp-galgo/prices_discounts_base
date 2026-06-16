@@ -6,7 +6,7 @@
 - **Para quién es**: PMs e IAs que van a implementar esta épica.
 - **Qué incluye**: el QUÉ y el PARA QUÉ de la construcción de la tabla final, los cálculos derivados, la escritura en Google Sheets y la automatización vía GitHub Actions.
 - **Qué NO incluye**: implementación técnica → ver `/docs/specs/T03-output-reporte.md` (por definir).
-- **PRD padre**: `/docs/prds/00-vision.md`
+- **PRD padre**: `/docs/prds/00_vision.md`
 
 ## 1. Objetivo
 
@@ -133,8 +133,8 @@ Las credenciales de Google Service Account se almacenan como secrets en el repos
 
 ## 9. Épicas relacionadas
 
-- Depende de E02 (`02-epic-extraccion-bonos.md`): requiere el conjunto de filas filtradas como entrada.
-- Depende indirectamente de E01 (`01-epic-conexion-sheets.md`): la conexión establecida en E01 se reutiliza para la escritura del reporte.
+- Depende de E02 (`02_epic_extraccion_bonos.md`): requiere el conjunto de filas filtradas como entrada.
+- Depende indirectamente de E01 (`01_epic_conexion_sheets.md`): la conexión establecida en E01 se reutiliza para la escritura del reporte.
 
 ## 10. Specs técnicos asociados
 

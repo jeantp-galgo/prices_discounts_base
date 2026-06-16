@@ -6,7 +6,7 @@
 - **Para quién es**: PMs e IAs que van a implementar esta épica.
 - **Qué incluye**: el QUÉ y el PARA QUÉ de la lectura de columnas clave y el filtrado de modelos con descuento activo.
 - **Qué NO incluye**: implementación técnica → ver `/docs/specs/T02-extraccion-bonos.md` (por definir).
-- **PRD padre**: `/docs/prds/00-vision.md`
+- **PRD padre**: `/docs/prds/00_vision.md`
 
 ## 1. Objetivo
 
@@ -111,8 +111,8 @@ Modelos con ambos descuentos en cero (o vacíos) se descartan silenciosamente. N
 
 ## 8. Épicas relacionadas
 
-- Depende de E01 (`01-epic-conexion-sheets.md`): requiere el mapeo `marca → pestaña` como entrada.
-- E03 (`03-epic-output-reporte.md`) consume el conjunto de filas filtradas producido por esta épica.
+- Depende de E01 (`01_epic_conexion_sheets.md`): requiere el mapeo `marca → pestaña` como entrada.
+- E03 (`03_epic_output_reporte.md`) consume el conjunto de filas filtradas producido por esta épica.
 
 ## 9. Specs técnicos asociados
 
