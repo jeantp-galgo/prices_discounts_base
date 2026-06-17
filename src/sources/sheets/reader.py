@@ -81,6 +81,65 @@ class GoogleSheetReader:
 
         return resultado
 
+    def detect_promo_sheet(self, sheet_name: str, keywords: list):
+        """
+        Retorna el nombre de la primera hoja cuyo título (lowercase) contenga
+        alguno de los keywords de promoción. Retorna None si no hay coincidencia.
+        """
+        spreadsheet = self.client.open(sheet_name)
+        all_tabs = [
+            ws.title
+            for ws in spreadsheet.worksheets()
+            if not ws._properties.get("hidden", False)
+        ]
+        matches = [tab for tab in all_tabs if any(kw in tab.lower() for kw in keywords)]
+
+        if len(matches) > 1:
+            print(f"[WARN] Se detectaron {len(matches)} hojas de promo: {matches}. Se usará: '{matches[0]}'")
+        elif len(matches) == 1:
+            print(f"[OK]   Hoja de promo detectada: '{matches[0]}'")
+        else:
+            print("[INFO] Sin hoja de promo activa.")
+
+        return matches[0] if matches else None
+
+    def read_promo_sheet(self, sheet_name: str, tab_name: str):
+        """
+        Lee la hoja de promo y normaliza columnas variables:
+          - "Bono Galgo" → "Desc. Galgo"  (variante del nombre de Galgo)
+          - "Desc. adicional" → "promo_discount"  (descuento extra de la promo)
+        Agrega is_promo=True a todas las filas.
+        """
+        spreadsheet = self.client.open(sheet_name)
+        ws = spreadsheet.worksheet(tab_name)
+        df = get_as_dataframe(ws, evaluate_formulas=True)
+
+        # Alias de columna Galgo: "Bono Galgo" → "Desc. Galgo"
+        if "Bono Galgo" in df.columns and "Desc. Galgo" not in df.columns:
+            df = df.rename(columns={"Bono Galgo": "Desc. Galgo"})
+
+        # Capturar descuento adicional de promo
+        if "Desc. adicional" in df.columns:
+            df = df.rename(columns={"Desc. adicional": "promo_discount"})
+        else:
+            df["promo_discount"] = 0
+
+        # Normalizar columna de descuento de marca si aún no es "Desc. marca"
+        KNOWN_COLS = {"Desc. Galgo", "Desc. marca", "promo_discount"}
+        if "Desc. marca" not in df.columns:
+            desc_col = next(
+                (col for col in df.columns
+                 if str(col).strip().startswith("Desc.") and col not in KNOWN_COLS),
+                None,
+            )
+            if desc_col:
+                df = df.rename(columns={desc_col: "Desc. marca"})
+
+        df["is_promo"] = True
+        n = df["Marca"].notna().sum()
+        print(f"[OK]   Promo '{tab_name}' → {n} modelos")
+        return df
+
     def update_sheet(self, google_sheet_info: dict, clear_data: bool = False):
         """
         Actualiza una hoja de Google Sheets con los datos de un DataFrame.

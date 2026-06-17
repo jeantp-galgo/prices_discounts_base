@@ -12,6 +12,8 @@ import numpy as np
 from src.sources.sheets.reader import GoogleSheetReader
 from src.config.settings import MONITOR_CREDENTIALS, PRICE_SHEETS_CREDENTIALS
 
+PROMO_KEYWORDS = ["buen fin", "hot sale", "arrancan promos"]
+
 
 def main():
     monitor_reader = GoogleSheetReader(MONITOR_CREDENTIALS)
@@ -54,6 +56,27 @@ def main():
     # ── 3. Consolidar ─────────────────────────────────────────────────────────
     df_all = pd.concat(hojas.values(), ignore_index=True)
 
+    # ── 3b. Override con hoja de promo (si existe) ───────────────────────────
+    print("\nBuscando hoja de promo...")
+    promo_tab = price_reader.detect_promo_sheet(SHEET_NAME, PROMO_KEYWORDS)
+    if promo_tab:
+        df_promo = price_reader.read_promo_sheet(SHEET_NAME, promo_tab)
+        df_promo_clean = df_promo[df_promo["Marca"].notna()].copy()
+        promo_key = pd.MultiIndex.from_arrays([df_promo_clean["Marca"], df_promo_clean["Modelo MKP"]])
+        brand_key = pd.MultiIndex.from_arrays([df_all["Marca"], df_all["Modelo MKP"]])
+        df_all = pd.concat([df_all[~brand_key.isin(promo_key)], df_promo_clean], ignore_index=True)
+        print(f"  → {len(df_promo_clean)} modelos con promo activa")
+
+    # Rellenar columnas de promo para modelos sin promo
+    if "promo_discount" not in df_all.columns:
+        df_all["promo_discount"] = 0
+    else:
+        df_all["promo_discount"] = df_all["promo_discount"].fillna(0)
+    if "is_promo" not in df_all.columns:
+        df_all["is_promo"] = False
+    else:
+        df_all["is_promo"] = df_all["is_promo"].fillna(False)
+
     df_columns_selected = df_all[
         [
             "Marca",
@@ -63,6 +86,8 @@ def main():
             "Desc. Galgo",
             "Total desc.",
             "Precio Galgo (c/IVA)",
+            "promo_discount",
+            "is_promo",
         ]
     ]
 
@@ -80,6 +105,9 @@ def main():
         True,
         False,
     )
+    df_columns_selected["has_promo_discount"] = np.where(
+        df_columns_selected["promo_discount"] > 0, True, False
+    )
 
     # ── 5. Limpieza ───────────────────────────────────────────────────────────
     df_columns_selected = df_columns_selected[df_columns_selected["Marca"].notna()]
@@ -96,6 +124,7 @@ def main():
             "Desc. Galgo": "galgo_discount",
             "Total desc.": "total_discount",
             "Precio Galgo (c/IVA)": "price_net",
+            # promo_discount e is_promo ya están en inglés
         },
         inplace=True,
     )
@@ -117,11 +146,14 @@ def main():
                 "year",
                 "brand_discount",
                 "galgo_discount",
+                "promo_discount",
                 "total_discount",
                 "price_net",
                 "has_galgo_discount",
                 "has_brand_discount",
                 "has_brand_and_galgo_discount",
+                "is_promo",
+                "has_promo_discount",
             ]
         ]
         .sort_values(by="has_galgo_discount", ascending=False)
