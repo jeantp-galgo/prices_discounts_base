@@ -61,7 +61,11 @@ def main():
     promo_tab = price_reader.detect_promo_sheet(SHEET_NAME, PROMO_KEYWORDS)
     if promo_tab:
         df_promo = price_reader.read_promo_sheet(SHEET_NAME, promo_tab)
-        df_promo_clean = df_promo[df_promo["Marca"].notna()].copy()
+        df_promo_clean = (
+            df_promo[df_promo["Marca"].notna()]
+            .drop_duplicates(subset=["Marca", "Modelo MKP"], keep="first")
+            .copy()
+        )
         promo_key = pd.MultiIndex.from_arrays([df_promo_clean["Marca"], df_promo_clean["Modelo MKP"]])
         brand_key = pd.MultiIndex.from_arrays([df_all["Marca"], df_all["Modelo MKP"]])
         df_all = pd.concat([df_all[~brand_key.isin(promo_key)], df_promo_clean], ignore_index=True)
