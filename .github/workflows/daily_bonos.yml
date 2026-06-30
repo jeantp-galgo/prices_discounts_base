@@ -32,3 +32,43 @@ jobs:
           MKP_MONITOR_BASE64: ${{ secrets.MKP_MONITOR_BASE64 }}
           MKP_PRICE_SHEETS_BASE64: ${{ secrets.MKP_PRICE_SHEETS_BASE64 }}
         run: python main.py
+
+      - name: Email — ejecución exitosa
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          to: jtrujillo@galgo.com
+          from: GitHub Actions
+          subject: "✅ Reporte diario — Bonos Galgo MX completado — ${{ github.run_id }}"
+          body: |
+            El pipeline de Reporte diario — Bonos Galgo MX se ejecutó correctamente.
+
+            Fecha: ${{ github.run_started_at }}
+            Workflow: ${{ github.workflow }}
+            Rama: ${{ github.ref_name }}
+
+            Ver detalles: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Email — ejecución fallida
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          to: jtrujillo@galgo.com
+          from: GitHub Actions
+          subject: "❌ Reporte diario — Bonos Galgo MX falló — ${{ github.run_id }}"
+          body: |
+            El pipeline de Reporte diario — Bonos Galgo MX falló.
+
+            Fecha: ${{ github.run_started_at }}
+            Workflow: ${{ github.workflow }}
+            Rama: ${{ github.ref_name }}
+
+            Ver logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
