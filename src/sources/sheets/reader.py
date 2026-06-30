@@ -23,7 +23,7 @@ class GoogleSheetReader:
             raise
    
 
-    def read_sheets_by_brands(self, sheet_name: str, marcas: list) -> dict:
+    def read_sheets_by_brands(self, sheet_name: str, marcas: list, percentage_brands: set = None) -> dict:
         """
         Abre el Sheets y devuelve un dict {marca: DataFrame} para cada
         marca que tenga una pestaña coincidente (búsqueda case-insensitive).
@@ -66,7 +66,26 @@ class GoogleSheetReader:
                 )
                 if desc_col:
                     df = df.rename(columns={desc_col: "Desc. marca"})
-                    print(f"[OK]   {marca} → '{match}' (columna '{desc_col}' → 'Desc. marca')")
+                    if percentage_brands and marca in percentage_brands:
+                        price_col = next(
+                            (c for c in df.columns if c.strip() in ("Precio Lista", "Precio", "Price")),
+                            None,
+                        )
+                        if price_col:
+                            def _pct_to_float(x):
+                                s = str(x).strip().rstrip('%').strip()
+                                try:
+                                    return float(s)
+                                except ValueError:
+                                    return float('nan')
+                            df["Desc. marca"] = (
+                                df["Desc. marca"].apply(_pct_to_float) / 100 * df[price_col]
+                            )
+                            print(f"[OK]   {marca} → '{match}' (columna '{desc_col}' convertida de % a valor absoluto usando '{price_col}')")
+                        else:
+                            print(f"[WARN] {marca} → '{match}' (columna '{desc_col}' es % pero no se encontró columna de precio para convertir)")
+                    else:
+                        print(f"[OK]   {marca} → '{match}' (columna '{desc_col}' → 'Desc. marca')")
                 else:
                     print(f"[OK]   {marca} → '{match}' (sin columna 'Desc. marca' detectada)")
 

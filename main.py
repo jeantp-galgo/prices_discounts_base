@@ -48,10 +48,12 @@ def main():
         "Italika",
         "Morbidelli",
         "CF Moto & CF LITE",
+        "Sharmax"
     ]
+    PERCENTAGE_BRANDS = {"CF Moto & CF LITE", "Sharmax"}
 
     print(f"\nLeyendo hojas de precios desde '{SHEET_NAME}'...")
-    hojas = price_reader.read_sheets_by_brands(SHEET_NAME, marcas)
+    hojas = price_reader.read_sheets_by_brands(SHEET_NAME, marcas, percentage_brands=PERCENTAGE_BRANDS)
 
     # ── 3. Consolidar ─────────────────────────────────────────────────────────
     df_all = pd.concat(hojas.values(), ignore_index=True)
