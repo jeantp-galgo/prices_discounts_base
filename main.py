@@ -155,11 +155,11 @@ def main():
                 "promo_discount",
                 "total_discount",
                 "price_net",
-                "has_galgo_discount",
                 "has_brand_discount",
+                "has_galgo_discount",
+                "has_promo_discount",
                 "has_brand_and_galgo_discount",
                 "is_promo",
-                "has_promo_discount",
             ]
         ]
         .sort_values(by="has_galgo_discount", ascending=False)
