@@ -1,10 +1,12 @@
 from src.sources.sheets.client import GoogleSheetClient
+from src.utils.retry import retry_on_transient_error
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 class GoogleSheetReader:
     def __init__(self, credentials: dict):
         self.client = GoogleSheetClient(credentials).get_client()
 
+    @retry_on_transient_error()
     def read_sheet(self, google_sheet_info: dict):
         """
         Lee una hoja de Google Sheets y devuelve un DataFrame.
@@ -23,6 +25,7 @@ class GoogleSheetReader:
             raise
    
 
+    @retry_on_transient_error()
     def read_sheets_by_brands(self, sheet_name: str, marcas: list, percentage_brands: set = None) -> dict:
         """
         Abre el Sheets y devuelve un dict {marca: DataFrame} para cada
@@ -100,6 +103,7 @@ class GoogleSheetReader:
 
         return resultado
 
+    @retry_on_transient_error()
     def detect_promo_sheet(self, sheet_name: str, keywords: list):
         """
         Retorna el nombre de la primera hoja cuyo título (lowercase) contenga
@@ -122,6 +126,7 @@ class GoogleSheetReader:
 
         return matches[0] if matches else None
 
+    @retry_on_transient_error()
     def read_promo_sheet(self, sheet_name: str, tab_name: str):
         """
         Lee la hoja de promo y normaliza columnas variables:
@@ -159,6 +164,7 @@ class GoogleSheetReader:
         print(f"[OK]   Promo '{tab_name}' → {n} modelos")
         return df
 
+    @retry_on_transient_error()
     def update_sheet(self, google_sheet_info: dict, clear_data: bool = False):
         """
         Actualiza una hoja de Google Sheets con los datos de un DataFrame.
