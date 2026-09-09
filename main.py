@@ -37,7 +37,7 @@ def main():
     print(f"  → {len(df_inventory)} modelos en inventario")
 
     # ── 2. Lista de precios por marca ─────────────────────────────────────────
-    SHEET_NAME = "🌧️☀️🎒 Lista de Precios Agosto | 2026"
+    SHEET_NAME = "🔔🎉🌶️Lista de Precios Septiembre| 2026"
     marcas = [
         "Bajaj",
         "TVS",
